@@ -35,8 +35,9 @@ class LoginController extends Controller
             return '/admin/dashboard';
         } elseif (Auth::user()->role == 'moderator') {
             return '/moderator/dashboard';
+        } elseif (Auth::user()->role == 'user') {
+            return '/home';
         }
-        return '/home';
     }
 
     protected function guard()

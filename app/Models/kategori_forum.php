@@ -9,8 +9,8 @@ class kategori_forum extends Model
     protected $table = 'kategori_forums';
     protected $fillable = ['nama', 'slug'];
 
-    public function forum()
+    public function forums()
     {
-        return $this->hasMany(Forum::class, 'kategori_forum_id');
+        return $this->hasMany(Forum::class, 'kategori_forum_id', 'id');
     }
 }

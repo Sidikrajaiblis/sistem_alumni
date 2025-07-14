@@ -37,6 +37,7 @@
                                 <th>Lokasi</th>
                                 <th>Gaji</th>
                                 <th>persyaratan</th>
+                                <th>foto</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
