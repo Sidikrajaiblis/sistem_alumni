@@ -20,12 +20,23 @@ class frontController extends Controller
         return view('welcome', compact('loker', 'kategori_lokers'));
     }
 
-    public function forum()
+    public function forum(Request $request)
     {
         $kategori_forums = kategori_forum::all();
-        $forums = Forum::where('status', '!=', 'pending')->with('user', 'kategoriForum')->get();
+
+        $query = Forum::where('status', '!=', 'pending')
+            ->with('user', 'kategoriForum');
+
+        // Cek apakah request mengandung filter kategori
+        if ($request->has('kategori') && $request->kategori) {
+            $query->where('kategori_forum_id', $request->kategori);
+        }
+
+        $forums = $query->get();
+
         return view('forum', compact('kategori_forums', 'forums'));
     }
+
 
     public function forumdetail($id)
     {

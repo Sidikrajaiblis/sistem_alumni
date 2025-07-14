@@ -171,8 +171,7 @@
         Swal.fire({
             icon: 'success',
             title: 'Berhasil!',
-            text: '{{ session('
-            success ') }}',
+            text: '{{ session(' success ','Forum berhasil ditambahkan, sedang menunggu persetujuan moderator.') }}',
             showConfirmButton: false,
             timer: 2000
         });
@@ -182,8 +181,7 @@
         Swal.fire({
             icon: 'error',
             title: 'Gagal!',
-            text: '{{ session('
-            error ') }}',
+            text: '{{ session(' error ', 'Gagal menambahkan Forum') }}',
             showConfirmButton: false,
             timer: 3000
         });

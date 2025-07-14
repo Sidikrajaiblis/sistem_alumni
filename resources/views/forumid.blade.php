@@ -3,7 +3,7 @@
 <!--start team-->
 <section class="py-5 bg-section" id="Team">
     <div class="container py-4 px-4 px-lg-0">
-        <div class="section-title text-center mb-5">
+        <div class="section-title text-center mb-3">
             <h1 class="mb-0 section-title-name"> Detail Forum</h1>
         </div>
 

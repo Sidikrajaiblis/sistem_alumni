@@ -40,9 +40,26 @@
                                 <td>{{ $data->email }}</td>
                                 <td>{{ $data->jenis_kelamin }}</td>
                                 <td>{{ $data->alamat }}</td>
-                                <td>{{ $data->status }}</td>
                                 <td>{{ $data->role }}</td>
+                                <td>
+                                    @if($data->status === 'active')
+                                    <span class="badge bg-success">Active</span>
+                                    @elseif($data->status === 'banned')
+                                    <span class="badge bg-danger">Banned</span>
+                                    @endif
+                                </td>
                                 <td width="20%">
+                                    @if($data->status === 'active')
+                                    <form action="{{ route('user.ban', $data->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-warning">🚫 Ban</button>
+                                    </form>
+                                    @elseif($data->status === 'banned')
+                                    <form action="{{ route('user.unban', $data->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-success">✔️ Unban</button>
+                                    </form>
+                                    @endif
                                     <form action="{{ route('user.destroy', $data->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')

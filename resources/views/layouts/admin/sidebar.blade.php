@@ -48,19 +48,12 @@
                 </li>
                 @endif
                 <li>
+                    @if (Auth::user()->role == 'moderator')
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class="material-icons-outlined">widgets</i>
                         </div>
                         <div class="menu-title">Forum</div>
                     </a>
-                    @if (Auth::user()->role == 'admin')
-                    <ul>
-                        <li><a href="{{ route('kategori_forum.index') }}"><i class="material-icons-outlined">arrow_right</i>Kategori Forum</a>
-                        </li>
-                        <li><a href="{{ route('forum.index') }}"><i class="material-icons-outlined">arrow_right</i>Forum diskusi</a>
-                        </li>
-                    </ul>
-                    @elseif (Auth::user()->role == 'moderator')
                     <ul>
                         <li><a href="{{ route('moderator.kategori_forum.index') }}"><i class="material-icons-outlined">arrow_right</i>Kategori Forum</a>
                         </li>

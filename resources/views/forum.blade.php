@@ -3,10 +3,24 @@
 <!--start team-->
 <section class="py-5 bg-section" id="Team">
     <div class="container py-4 px-4 px-lg-0">
-        <div class="section-title text-center mb-5">
+        <div class="section-title text-center mb-3">
             <h1 class="mb-0 section-title-name">Forum Diskusi</h1>
         </div>
 
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <select id="filter-kategori" class="form-select">
+                        <option value="">Semua Kategori</option>
+                        @foreach ($kategori_forums as $kategori)
+                        <option value="{{ $kategori->id }}">
+                            {{ $kategori->nama }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
 
 
         <div class="row">
@@ -83,43 +97,65 @@
                 </div>
             </div>
             @endif
-            @session('success')
-            <div class="col-12">
-                <div class="alert alert-success text-center rounded-4">
-                    {{ session('success') }}
-                </div>
-            </div>
-            @endsession
-            @if (session('error'))
-            <div class="col-12">
-                <div class="alert alert-danger text-center rounded-4">
-                    {{ session('error') }}
-                </div>
-            </div>
-            @endif
-            @foreach ($forums as $data)
-            <div class="col-12 col-xl-6">
-                <div class="card rounded-4">
-                    <div class="card-body">
-                        <a class="d-flex align-items-center gap-3">
-                            <div class="customer-pic">
-                                <img src="{{ asset('storage/' . $data->user->foto) }}" class="rounded-circle" width="40" height="40" alt="">
+            <div class="container" id="forum-container">
+                @foreach ($forums as $data)
+                <div class="col-12 col-xl-6">
+                    <div class="card rounded-4">
+                        <div class="card-body">
+                            <a class="d-flex align-items-center gap-3">
+                                <div class="customer-pic">
+                                    <img src="{{ asset('storage/' . $data->user->foto) }}" class="rounded-circle" width="40" height="40" alt="">
+                                </div>
+                                <p class="mb-0 fw-bold">{{ $data->user->name }}</p>
+                            </a> <br>
+
+                            <p class="mb-0 fw-bold">Kategori :{{ $data->kategoriForum->nama ?? '-' }}</p>
+                            <h5 class="mb-0">{{ $data->judul }}</h5>
+                            <p class="my-3">{{ $data->isi }}. </p>
+                            <div class="">
+                                <!-- Button trigger modal -->
+                                <a href="{{ route('forumid', $data->id) }}" class="btn btn-grd-primary px-4">Lihat detail</a>
                             </div>
-                            <p class="mb-0 fw-bold">{{ $data->user->name }}</p>
-                        </a> <br>
-                        <h5 class="mb-0">{{ $data->judul }}</h5>
-                        <p class="my-3">{{ $data->isi }}. </p>
-                        <div class="">
-                            <!-- Button trigger modal -->
-                            <a href="{{ route('forumid', $data->id) }}" class="btn btn-grd-primary px-4">Lihat detail</a>
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div><!--end row-->
     </div>
 </section>
 <!--end team-->
-<!--end main wrapper-->
+
+<script>
+    let kategoriId = '';
+
+    function loadForum() {
+        let url = '/forum/data';
+        if (kategoriId !== '') {
+            url += '?kategori=' + kategoriId;
+        }
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('forum-container').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Gagal fetch forum:', error);
+            });
+    }
+
+    // Load pertama kali
+    loadForum();
+
+    // Auto refresh tiap 5 detik
+    setInterval(loadForum, 5000);
+
+    // Ganti filter kategori
+    document.getElementById('filter-kategori').addEventListener('change', function() {
+        kategoriId = this.value;
+        loadForum(); // Langsung load ulang sesuai kategori
+    });
+</script>
+
 @endsection

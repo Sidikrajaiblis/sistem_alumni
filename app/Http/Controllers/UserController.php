@@ -12,7 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
+        $user = User::whereIn('role', ['user', 'moderator'])->get();
         return view('admin.user.index', compact('user'));
     }
 

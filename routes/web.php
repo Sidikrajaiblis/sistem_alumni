@@ -32,6 +32,8 @@ Route::middleware(['auth', 'role:user'])->get('/user/dashboard', function () {
     return view('user.dashboard');
 });
 
+Route::get('forum', [frontController::class, 'forum'])->name('forum');
+Route::get('/forum/data', [ForumController::class, 'getData']);
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', function () {
@@ -53,21 +55,23 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('admin/loker/{loker}', [LokerController::class, 'update'])->name('loker.update');
     Route::delete('admin/loker/{loker}', [LokerController::class, 'destroy'])->name('loker.destroy');
 
-    Route::resource('admin/kategori_forum', KategoriForumController::class)->names('admin.kategori_forum');
-    Route::get('admin/kategori_forum', [KategoriForumController::class, 'index'])->name('kategori_forum.index');
-    Route::get('admin/kategori_forum/create', [KategoriForumController::class, 'create'])->name('kategori_forum.create');
-    Route::post('admin/kategori_forum', [KategoriForumController::class, 'store'])->name('kategori_forum.store');
-    Route::get('admin/kategori_forum/{kategori_forum}/edit', [KategoriForumController::class, 'edit'])->name('kategori_forum.edit');
-    Route::put('admin/kategori_forum/{kategori_forum}', [KategoriForumController::class, 'update'])->name('kategori_forum.update');
-    Route::delete('admin/kategori_forum/{kategori_forum}', [KategoriForumController::class, 'destroy'])->name('kategori_forum.destroy');
+    // Route::resource('admin/kategori_forum', KategoriForumController::class)->names('admin.kategori_forum');
+    // Route::get('admin/kategori_forum', [KategoriForumController::class, 'index'])->name('kategori_forum.index');
+    // Route::get('admin/kategori_forum/create', [KategoriForumController::class, 'create'])->name('kategori_forum.create');
+    // Route::post('admin/kategori_forum', [KategoriForumController::class, 'store'])->name('kategori_forum.store');
+    // Route::get('admin/kategori_forum/{kategori_forum}/edit', [KategoriForumController::class, 'edit'])->name('kategori_forum.edit');
+    // Route::put('admin/kategori_forum/{kategori_forum}', [KategoriForumController::class, 'update'])->name('kategori_forum.update');
+    // Route::delete('admin/kategori_forum/{kategori_forum}', [KategoriForumController::class, 'destroy'])->name('kategori_forum.destroy');
 
-    Route::resource('admin/forum', ForumController::class)->names('admin.forum');
-    Route::get('admin/forum', [ForumController::class, 'index'])->name('forum.index');
-    // Route::get('admin/forum/create', [ForumController::class, 'create'])->name('forum.create');
-    // Route::post('admin/forum', [ForumController::class, 'store'])->name('forum.store');
-    // Route::get('admin/forum/{forum}/edit', [ForumController::class, 'edit'])->name('forum.edit');
-    // Route::put('admin/forum/{forum}', [ForumController::class, 'update'])->name('forum.update');
-    Route::delete('admin/forum/{forum}', [ForumController::class, 'destroy'])->name('forum.destroy');
+    // Route::resource('admin/forum', ForumController::class)->names('admin.forum');
+    // Route::get('admin/forum', [ForumController::class, 'index'])->name('forum.index');
+    // Route::get('/forum/{id}/komentar', [KomentarController::class, 'index'])->name('komentar.index');
+    // Route::post('/forum/{id}/komentar', [KomentarController::class, 'store'])->name('komentar.store');
+    // Route::delete('/komentar/{komentar}', [KomentarController::class, 'destroy'])->name('komentar.destroy');
+    // Route::get('forum.detail/{id}', [frontController::class, 'forumdetail'])->name('forum.detail');
+    // Route::get('forum', [frontController::class, 'forum'])->name('forum');
+    // Route::get('forumid/{id}', [forumidcontroller::class, 'forumid'])->name('forumid');
+    // Route::delete('admin/forum/{forum}', [ForumController::class, 'destroy'])->name('forum.destroy');
 
     Route::resource('admin/user', UserController::class)->names('admin.user');
     Route::delete('admin/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
@@ -90,6 +94,7 @@ Route::middleware(['auth', 'role:moderator'])->group(function () {
     Route::get('forum.detail/{id}', [frontController::class, 'forumdetail'])->name('forum.detail');
     Route::get('forum', [frontController::class, 'forum'])->name('forum');
     Route::get('forumid/{id}', [forumidcontroller::class, 'forumid'])->name('forumid');
+    Route::delete('moderator/forum/{forum}', [ForumController::class, 'destroy'])->name('forum.destroy');
 
     Route::patch('moderator/forums/{id}/approve', [ForumController::class, 'approve'])->name('moderator.forum.approve');
     Route::delete('moderator/forums/{id}/reject', [ForumController::class, 'reject'])->name('moderator.forum.reject');
@@ -109,6 +114,7 @@ Route::middleware(['auth', 'role:user,moderator'])->group(function () {
     Route::get('home', [ForumController::class, 'forum'])->name('home.forum');
     Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show');
     Route::get('forumid/{id}', [forumidcontroller::class, 'forumid'])->name('forumid');
+    Route::get('/forum/data', [ForumController::class, 'getData']);
 });
 
 Route::post('/notification/read/{id}', function ($id) {

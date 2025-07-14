@@ -50,6 +50,24 @@ class forum extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'user_id' => 3,
+                'kategori_forum_id' => 4,
+                'judul' => 'Saran untuk pengembangan Bisnis',
+                'isi' => 'Saya punya beberapa saran untuk pengembangan bisnis ini. Bagaimana cara menyampaikannya?',
+                'status' => 'published',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 4,
+                'kategori_forum_id' => 5,
+                'judul' => 'Ada yang suka nonton one piece?',
+                'isi' => 'Saya suka banget nonton one piece, ada yang mau diskusi?',
+                'status' => 'published',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

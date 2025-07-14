@@ -7,6 +7,7 @@ use App\Models\kategori_forum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Events\ForumApproved;
 
 class ForumController extends Controller
 {
@@ -48,12 +49,32 @@ class ForumController extends Controller
         return view('home', compact('forums'));
     }
 
+    public function getData(Request $request)
+    {
+        $query = \App\Models\Forum::where('status', 'published')
+            ->with('kategoriForum', 'user')
+            ->latest();
+
+        if ($request->has('kategori') && $request->kategori != '') {
+            $query->where('kategori_forum_id', $request->kategori);
+        }
+
+        $forum = $query->get();
+
+        return view('forum.partials.forum-list', compact('forum'));
+    }
+
+
 
     public function approve($id)
     {
         $forum = Forum::findOrFail($id);
         $forum->status = 'published';
         $forum->save();
+
+        // Kirim event ke frontend via WebSocket (Laravel Reverb)
+        event(new ForumApproved($forum));
+
         return redirect()->back()->with('success', 'Forum berhasil disetujui.');
     }
 
@@ -121,7 +142,7 @@ class ForumController extends Controller
      */
     public function edit(forum $forum)
     {
-        return view('admin.forum.edit', compact('forum'));
+        //
     }
 
     /**
@@ -129,14 +150,7 @@ class ForumController extends Controller
      */
     public function update(Request $request, forum $forum)
     {
-        $request->validate([
-            'kategori_forum_id' => 'required',
-            'judul' => 'required,' . $forum->id,
-            'isi' => 'required',
-        ]);
-
-        $forum->update($request->all());
-        return redirect()->route('forum.index')->with('success', 'Forum updated successfully.');
+        //
     }
 
     /**
@@ -145,6 +159,6 @@ class ForumController extends Controller
     public function destroy(forum $forum)
     {
         $forum->delete();
-        return redirect()->route('forum.index')->with('success', 'Forum deleted successfully.');
+        return redirect()->route('moderator.forum.index')->with('success', 'Forum deleted successfully.');
     }
 }
